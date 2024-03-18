@@ -9,10 +9,18 @@ import numpy as np
 
 
 def get_result_confusion_jsons(gt, pred, data_type, acc_f_name_prefix=None):
-    if 'ntu' in data_type:
+    if '60' in data_type:
         code_labels = ntu120_code_labels
+        num_classes = 60
+        labels = list(range(num_classes))
+    elif '120' in data_type:
+        code_labels = ntu120_code_labels
+        num_classes = 120
+        labels = list(range(num_classes))
     elif 'elderly' in data_type:
         code_labels = elderly_code_labels
+        num_classes = 55
+        labels = list(range(num_classes))
     elif 'bly' in data_type:
         code_labels = bly_labels
         gt = np.array(gt)[:, 0]
