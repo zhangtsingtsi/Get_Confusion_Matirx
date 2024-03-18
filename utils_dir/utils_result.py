@@ -51,7 +51,7 @@ def get_result_confusion_jsons(gt, pred, data_type, acc_f_name_prefix=None):
     label_acc = dict(sorted(label_acc.items(), key=lambda item: item[1]))
     label_acc_keys = list(label_acc.keys())
 
-    conf_mat = confusion_matrix(gt, pred)
+    conf_mat = confusion_matrix(gt, pred, labels=labels)
 
     most_confused = {}
     for i in correct_dict.keys():
