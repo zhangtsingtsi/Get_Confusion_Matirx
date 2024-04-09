@@ -67,26 +67,44 @@ elderly_code_labels = {
     55: "lying downn"
 }
 
-# Reverse the mapping to get activity names by index
-index_to_activity = {v: k for k, v in elderly_code_labels.items()}
-
 # Initialize an empty confusion matrix
 n_labels = len(elderly_code_labels)
 confusion_matrix = np.zeros((n_labels, n_labels))
 
 # Populate the confusion matrix
+# Assuming each activity in confusion_matrix_data corresponds directly to the index in elderly_code_labels
 for activity, data in confusion_matrix_data.items():
-    # Extract the true label index
-    true_index = index_to_activity[activity] - 1  # Adjust for 0-based indexing
+    # The index for true labels is the position in the elderly_code_labels, adjusted for 0-based indexing
+    true_index = list(elderly_code_labels.values()).index(activity)
     for prediction_data in data[:-1]:  # Exclude the last item which is the total count
         predicted_activity, count = prediction_data.rsplit('  ', 1)
-        predicted_index = index_to_activity[predicted_activity] - 1  # Adjust for 0-based indexing
+        predicted_index = list(elderly_code_labels.values()).index(predicted_activity)  # Adjust for 0-based indexing
         confusion_matrix[true_index, predicted_index] = int(count)
+
+# Define labels for the plot based on the order in elderly_code_labels
+labels = list(range(1, n_labels + 1))
+
+# # Reverse the mapping to get activity names by index
+# index_to_activity = {v: k for k, v in elderly_code_labels.items()}
+
+# # Initialize an empty confusion matrix
+# n_labels = len(elderly_code_labels)
+# confusion_matrix = np.zeros((n_labels, n_labels))
+
+# # Populate the confusion matrix
+# for activity, data in confusion_matrix_data.items():
+#     # Extract the true label index
+#     true_index = index_to_activity[activity] - 1  # Adjust for 0-based indexing
+#     for prediction_data in data[:-1]:  # Exclude the last item which is the total count
+#         predicted_activity, count = prediction_data.rsplit('  ', 1)
+#         predicted_index = index_to_activity[predicted_activity] - 1  # Adjust for 0-based indexing
+#         confusion_matrix[true_index, predicted_index] = int(count)
 
 # Plot the confusion matrix
 plt.figure(figsize=(20, 20))
-sns.heatmap(confusion_matrix, annot=True, cmap="Blues", xticklabels=elderly_code_labels.values(), yticklabels=elderly_code_labels.values())
-plt.title('Confusion Matrix')
+#sns.heatmap(confusion_matrix, annot=True, cmap="Blues", xticklabels=elderly_code_labels.values(), yticklabels=elderly_code_labels.values())
+sns.heatmap(confusion_matrix, annot=True, cmap="Blues", xticklabels=labels, yticklabels=labels)
+#plt.title('Confusion Matrix')
 plt.xlabel('Predicted Labels')
 plt.ylabel('True Labels')
 plt.savefig('Baseline_confusion_matrix.png')
